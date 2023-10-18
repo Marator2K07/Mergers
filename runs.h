@@ -3,6 +3,7 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <QRandomGenerator>
 
 ///
 /// \brief The Runs class
@@ -13,10 +14,9 @@ public:
     ///
     /// \brief openRandomSeq
     /// создает файл со случайным набором чисел
-    static openRandomSeq(QString path,
-                         QString name,
-                         int lenght,
-                         int seed);
+    static void openRandomSeq(QString path,
+                              QString name,
+                              int lenght);
 
     Runs();
 };
