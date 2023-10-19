@@ -9,10 +9,10 @@ QFile *Runs::openRandomSeq(QString path,
     if (!file->open(QIODevice::WriteOnly  | QIODevice::Text))
         return nullptr;
     // если все успешно, можем писать случайную информацию в файл
-    QTextStream out(file);
+    QTextStream stream(file);
     for (int i = 0; i < lenght-1; ++i) {
         int randNumber = QRandomGenerator::global()->bounded(669);
-        out << randNumber << ' ';
+        stream << randNumber << ' ';
     }
     file->close();
     return file;
@@ -49,16 +49,37 @@ qint32 Runs::readIntFromRunnerPos(Runner *runner, int pos)
     QFile *file = runner->getFile();
     if (file == nullptr)
         return -1;
-    if (!file->open(QIODevice::ReadOnly  | QIODevice::Text))
+    if (!file->open(QIODevice::ReadOnly | QIODevice::Text))
         return -1;
     // считываем число с указанной позиции
     QTextStream stream(file);
     QString thisNum;
-    file->read(pos);
-    stream >> thisNum;
-    file->close();
+    if (file->seek(pos)) {
+        stream >> thisNum;
+    } else {
+        thisNum = "-1";
+    }
 
+    file->close();
     return stoi(thisNum.toStdString());
+}
+
+void Runs::writeIntFromRunnerPos(Runner *runner,
+                                 int pos,
+                                 int num)
+{
+    QFile *file = runner->getFile();
+    if (file == nullptr)
+        return;
+    if (!file->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+        return;
+    // пишем заданное число в указанную позицию
+    QTextStream stream(file);
+    if (file->seek(pos)) {
+        stream << num << ' ';
+    }
+
+    file->close();
 }
 
 void Runs::copy(Runner *src, Runner *dest)
