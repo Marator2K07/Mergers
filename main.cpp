@@ -9,8 +9,11 @@ int main(int argc, char *argv[])
     Runner *r = new Runner();
     Runs::setRunner(r, newFile, 0);
 
-    Runs::readIntFromRunnerPos(r, 5);
-    Runs::writeIntFromRunnerPos(r, 0, 999);
+    int *lol = new int;
+    Runs::writeIntToRunnerPos(r, 778);
+    Runs::readIntFromRunnerPos(r, *lol);
+
+    Runs::writeSeq(newFile);
 
     return a.exec();
 }
