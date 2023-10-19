@@ -8,6 +8,8 @@
 #include <QTextStream>
 #include <QRandomGenerator>
 
+using namespace std;
+
 ///
 /// \brief The Runs class
 /// Класс серий - упорядоченных послевательностей
@@ -21,9 +23,12 @@ public:
                                 QString name,
                                 int lenght);
 
-    static void set(Runner r,
-                    QFile *file,
-                    qint64 pos);
+    ///
+    /// \brief setRunner
+    /// метод инициализации бегунка с переданным файлом
+    static void setRunner(Runner *runner,
+                          QFile *file,
+                          qint64 pos);
 
     Runs();
 };

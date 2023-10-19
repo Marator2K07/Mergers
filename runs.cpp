@@ -18,30 +18,30 @@ QFile *Runs::openRandomSeq(QString path,
     return file;
 }
 
-void Runs::set(Runner r,
-               QFile *file,
-               qint64 pos)
+void Runs::setRunner(Runner *runner,
+                     QFile *file,
+                     qint64 pos)
 {
     // работы с бегунком
-    r.setFile(file);
-    r.setEof(false);
-    if (r.getPos() >= 0) {
-        if (r.getPos() <= file->size()) {
-            r.setPos(pos);
+    runner->setFile(file);
+    runner->setEof(false);
+    if (runner->getPos() >= 0) {
+        if (runner->getPos() <= file->size()) {
+            runner->setPos(pos);
         } else {
-            r.setPos(file->size());
+            runner->setPos(file->size());
         }
     } else {
-        r.setPos(0);
+        runner->setPos(0);
     }
-    r.setEor(r.getEof());
+    runner->setEor(runner->getEof());
     // считываем первое число из последовательности
     if (!file->open(QIODevice::ReadOnly  | QIODevice::Text))
         return;
     QTextStream in(file);
     QString firstNum;
     in >> firstNum;
-    r.setFirst(std::stoi(firstNum));
+    runner->setFirst(stoi(firstNum.toStdString()));
 }
 
 Runs::Runs()
