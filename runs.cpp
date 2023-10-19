@@ -35,13 +35,12 @@ void Runs::setRunner(Runner *runner,
         runner->setPos(0);
     }
     runner->setEor(runner->getEof());
+    runner->setFirst(new int);
     // считываем первое число из последовательности
-    int result = -1;;
-    Runs::readIntFromRunnerPos(runner, &result);
-    runner->setFirst(result);
+    Runs::readIntFromRunnerPos(runner, *runner->getFirst());
 }
 
-void Runs::readIntFromRunnerPos(Runner *runner, int *num)
+void Runs::readIntFromRunnerPos(Runner *runner, int &num)
 {
     QFile *file = runner->getFile();
     if (file == nullptr)
@@ -58,7 +57,7 @@ void Runs::readIntFromRunnerPos(Runner *runner, int *num)
     }
 
     file->close();
-    *num = stoi(thisNum.toStdString());
+    num = stoi(thisNum.toStdString());
 }
 
 void Runs::writeIntToRunnerPos(Runner *runner, int num)
@@ -82,7 +81,9 @@ void Runs::writeIntToRunnerPos(Runner *runner, int num)
 void Runs::copy(Runner *src, Runner *dest)
 {
     dest->setFirst(src->getFirst());
-    //Runs::writeIntFromRunnerPos(dest, dest)
+    Runs::writeIntToRunnerPos(dest, *dest->getFirst());
+    Runs::readIntFromRunnerPos(src, *src->getFirst());
+    src->setEor(src->getEof() || (*src->getFirst() < *dest->getFirst()));
 }
 
 Runs::Runs()
