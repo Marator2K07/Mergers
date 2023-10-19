@@ -1,11 +1,11 @@
 #include "runner.h"
 
-QFile Runner::getFile() const
+QFile *Runner::getFile()
 {
     return file;
 }
 
-void Runner::setFile(const QFile &newFile)
+void Runner::setFile(QFile *newFile)
 {
     file = newFile;
 }
@@ -15,7 +15,7 @@ qint64 Runner::getPos() const
     return pos;
 }
 
-void Runner::setPos(int newPos)
+void Runner::setPos(qint64 newPos)
 {
     pos = newPos;
 }
