@@ -36,13 +36,12 @@ void Runs::setRunner(Runner *runner,
     }
     runner->setEor(runner->getEof());
     // считываем первое число из последовательности
-    if (!file->open(QIODevice::ReadOnly  | QIODevice::Text))
-        return;
-    QTextStream in(file);
-    QString firstNum;
-    in >> firstNum;
-    runner->setFirst(stoi(firstNum.toStdString()));
-    file->close();
+    qint32 result = Runs::readIntFromRunnerPos(runner, 0);
+    if (result != -1) {
+        runner->setFirst(result);
+    } else {
+        runner->setFirst(0);
+    }
 }
 
 qint32 Runs::readIntFromRunnerPos(Runner *runner, int pos)
