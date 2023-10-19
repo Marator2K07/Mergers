@@ -16,7 +16,7 @@ public:
     Runner();
 
     QFile *getFile();
-    void setFile(QFile *newFile);
+    void setFile(QFile *file);
     qint64 getPos() const;
     void setPos(qint64 newPos);
     int getFirst() const;

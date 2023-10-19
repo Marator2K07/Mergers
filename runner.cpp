@@ -5,9 +5,9 @@ QFile *Runner::getFile()
     return file;
 }
 
-void Runner::setFile(QFile *newFile)
+void Runner::setFile(QFile *file)
 {
-    file = newFile;
+    file = file;
 }
 
 qint64 Runner::getPos() const
