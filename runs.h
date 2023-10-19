@@ -33,14 +33,12 @@ public:
     ///
     /// \brief readIntFromRunnerPos
     /// чтение числа из файла с текущей позиции
-    static qint32 readIntFromRunnerPos(Runner *runner, int pos);
+    static void readIntFromRunnerPos(Runner *runner, int *num);
 
     ///
     /// \brief writeIntFromRunnerPos
-    /// запись числа на определнную позицию в файла
-    static void writeIntFromRunnerPos(Runner *runner,
-                                      int pos,
-                                      int num);
+    /// запись числа в текущую позицию ползунка файла
+    static void writeIntToRunnerPos(Runner *runner, int num);
 
     static void copy(Runner *src, Runner *dest);
 

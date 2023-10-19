@@ -36,46 +36,43 @@ void Runs::setRunner(Runner *runner,
     }
     runner->setEor(runner->getEof());
     // считываем первое число из последовательности
-    qint32 result = Runs::readIntFromRunnerPos(runner, 0);
-    if (result != -1) {
-        runner->setFirst(result);
-    } else {
-        runner->setFirst(0);
-    }
+    int result = -1;;
+    Runs::readIntFromRunnerPos(runner, &result);
+    runner->setFirst(result);
 }
 
-qint32 Runs::readIntFromRunnerPos(Runner *runner, int pos)
+void Runs::readIntFromRunnerPos(Runner *runner, int *num)
 {
     QFile *file = runner->getFile();
     if (file == nullptr)
-        return -1;
+        return;
     if (!file->open(QIODevice::ReadOnly | QIODevice::Text))
-        return -1;
-    // считываем число с указанной позиции
+        return;
+    // считываем число с текущей позиции
     QTextStream stream(file);
     QString thisNum;
-    if (file->seek(pos)) {
+    if (file->seek(runner->getPos())) {
         stream >> thisNum;
     } else {
         thisNum = "-1";
     }
 
     file->close();
-    return stoi(thisNum.toStdString());
+    *num = stoi(thisNum.toStdString());
 }
 
-void Runs::writeIntFromRunnerPos(Runner *runner,
-                                 int pos,
-                                 int num)
+void Runs::writeIntToRunnerPos(Runner *runner, int num)
 {
     QFile *file = runner->getFile();
     if (file == nullptr)
         return;
-    if (!file->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+    if (!file->open(QIODevice::WriteOnly |
+                    QIODevice::Text |
+                    QIODevice::Append))
         return;
-    // пишем заданное число в указанную позицию
+    // пишем заданное число в текущую позицию
     QTextStream stream(file);
-    if (file->seek(pos)) {
+    if (file->seek(runner->getPos())) {
         stream << num << ' ';
     }
 
@@ -84,8 +81,8 @@ void Runs::writeIntFromRunnerPos(Runner *runner,
 
 void Runs::copy(Runner *src, Runner *dest)
 {
-    // dest->setFirst(src->getFirst());
-
+    dest->setFirst(src->getFirst());
+    //Runs::writeIntFromRunnerPos(dest, dest)
 }
 
 Runs::Runs()
