@@ -45,6 +45,13 @@ public:
     /// копирование одного элемента из файла в другой
     static void copy(Runner *src, Runner *dest);
 
+    ///
+    /// \brief writeSeq
+    /// вывод текущего файла с метками уже
+    /// отсортированных частей для этой последовательности
+    /// чисел
+    static void writeSeq(QFile *file);
+
     Runs();
 };
 

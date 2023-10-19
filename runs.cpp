@@ -86,6 +86,42 @@ void Runs::copy(Runner *src, Runner *dest)
     src->setEor(src->getEof() || (*src->getFirst() < *dest->getFirst()));
 }
 
+void Runs::writeSeq(QFile *file)
+{
+    if (file == nullptr)
+        return;
+    if (!file->open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+    // начальная инициализация переменных
+    QString x;
+    QString y = ".";
+    int n = 0;
+    int k = 0;
+    // ввод результата в с указанием!!! уже отсортированных
+    // последовательностей
+    QString seq; // строка с результатом
+    QTextStream stream(file);
+    stream >> x;
+    while (!stream.atEnd()) {
+        seq.append(x);
+        k++;
+        stream >> y;
+        if (y == "") {
+            continue;
+        }
+
+        if (stoi(y.toStdString()) < stoi(x.toStdString())) {
+            seq.append('|');
+            n++;
+        }
+        x = y;
+        seq.append(' ');
+    }
+    // вывод результата
+    qDebug() << '$' << k << ' ' << n;
+    qDebug() << seq;
+}
+
 Runs::Runs()
 {
 }
