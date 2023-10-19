@@ -20,12 +20,12 @@ void Runner::setPos(qint64 newPos)
     pos = newPos;
 }
 
-int Runner::getFirst() const
+int *Runner::getFirst()
 {
     return first;
 }
 
-void Runner::setFirst(int newFirst)
+void Runner::setFirst(int *newFirst)
 {
     first = newFirst;
 }
