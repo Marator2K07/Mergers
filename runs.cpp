@@ -42,6 +42,30 @@ void Runs::setRunner(Runner *runner,
     QString firstNum;
     in >> firstNum;
     runner->setFirst(stoi(firstNum.toStdString()));
+    file->close();
+}
+
+qint32 Runs::readIntFromRunnerPos(Runner *runner, int pos)
+{
+    QFile *file = runner->getFile();
+    if (file == nullptr)
+        return -1;
+    if (!file->open(QIODevice::ReadOnly  | QIODevice::Text))
+        return -1;
+    // считываем число с указанной позиции
+    QTextStream stream(file);
+    QString thisNum;
+    file->read(pos);
+    stream >> thisNum;
+    file->close();
+
+    return stoi(thisNum.toStdString());
+}
+
+void Runs::copy(Runner *src, Runner *dest)
+{
+    // dest->setFirst(src->getFirst());
+
 }
 
 Runs::Runs()

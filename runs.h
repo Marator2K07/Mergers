@@ -30,6 +30,14 @@ public:
                           QFile *file,
                           qint64 pos);
 
+    ///
+    /// \brief readIntFromRunnerPos
+    /// чтение числа из файла с текущей позиции
+    static qint32 readIntFromRunnerPos(Runner *runner, int pos);
+
+
+    static void copy(Runner *src, Runner *dest);
+
     Runs();
 };
 
