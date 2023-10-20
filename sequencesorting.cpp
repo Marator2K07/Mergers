@@ -6,11 +6,15 @@ void SequenceSorting::NaturalMerge(QFile *src)
     QFile *f0;
     QFile *f1;
     QFile *f2;
-    // создание ползунков для файлов выше
-    Runner *r0;
-    Runner *r1;
-    Runner *r2;
+    // создание бегунков для файлов выше
+    Runner *r0 = new Runner;
+    Runner *r1 = new Runner;
+    Runner *r2 = new Runner;
+    // инициализируем бегунок с помощью файла источника
+    Runs::setRunner(r2, src, 0);
+    do {
 
+    } while (L != 1);
 }
 
 SequenceSorting::SequenceSorting()
