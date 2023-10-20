@@ -25,9 +25,11 @@ int *Runner::getFirst()
     return first;
 }
 
-void Runner::setFirst(int *newFirst)
+void Runner::setFirst(int newFirst)
 {
-    first = newFirst;
+    if (first != nullptr) {
+        *first = newFirst;
+    }
 }
 
 bool Runner::getEof() const
@@ -57,5 +59,5 @@ void Runner::posMove(short shift)
 
 Runner::Runner()
 {
-
+    first = new int;
 }

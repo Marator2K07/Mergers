@@ -20,7 +20,7 @@ public:
     qint64 getPos() const;
     void setPos(qint64 newPos);
     int *getFirst();
-    void setFirst(int *newFirst);
+    void setFirst(int newFirst);
     bool getEof() const;
     void setEof(bool newEof);
     bool getEor() const;
