@@ -40,16 +40,18 @@ void Runs::setRunner(Runner *runner,
     } else {
         runner->setPos(0);
     }
-    runner->setEor(runner->getEof());
     runner->setFirst(0);
     // считываем первое число из последовательности
     Runs::readIntFromRunnerPos(runner, *runner->getFirst());
+    // а потом ставим метку возможного окончания серии
+    runner->setEor(runner->getEof());
 }
 
 void Runs::readIntFromRunnerPos(Runner *runner,
                                 int &num,
                                 bool posMove)
 {
+    // всевозможные проверки
     QFile *file = runner->getFile();
     if (file == nullptr)
         return;
@@ -63,10 +65,12 @@ void Runs::readIntFromRunnerPos(Runner *runner,
         if (posMove)
             runner->posMove(QString::number(num).length()+1);
     } else {
-        thisNum = "-1";
+        thisNum = "0";
     }
-
+    // ставим метку у бегунка, конец ли это файла или нет и закрываем его
+    runner->setEof(stream.atEnd());
     file->close();
+    // наконец пишем результат операции
     num = stoi(thisNum.toStdString());
 }
 
@@ -74,6 +78,7 @@ void Runs::writeIntToRunnerPos(Runner *runner,
                                int num,
                                bool posMove)
 {
+    // всевозможные проверки
     QFile *file = runner->getFile();
     if (file == nullptr)
         return;
@@ -85,11 +90,12 @@ void Runs::writeIntToRunnerPos(Runner *runner,
     QTextStream stream(file);
     if (file->seek(runner->getPos())) {
         stream << num << ' ';
+        // смещаем позицию далее после записи в эту позицию
+        if (posMove)
+            runner->posMove(QString::number(num).length()+1);
     }
-    // смещаем позицию далее после записи в эту позицию
-    if (posMove)
-        runner->posMove(QString::number(num).length()+1);
-
+    // ставим метку у бегунка, конец ли это файла или нет и закрываем его
+    runner->setEof(file->atEnd());
     file->close();
 }
 
