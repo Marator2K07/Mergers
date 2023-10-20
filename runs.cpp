@@ -1,5 +1,11 @@
 #include "runs.h"
 
+QFile *Runs::newFile(QString path, QString name)
+{
+    QString filePath = path + '/' + name;
+    return new QFile(filePath);
+}
+
 QFile *Runs::openRandomSeq(QString path,
                            QString name,
                            int lenght)

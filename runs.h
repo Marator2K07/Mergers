@@ -17,9 +17,14 @@ class Runs
 {
 public:
     ///
+    /// \brief newFile
+    /// метод создания и инициализации нового файла
+    static QFile *newFile(QString path, QString name);
+
+    ///
     /// \brief openRandomSeq
     /// создает файл со случайным набором чисел
-    static QFile* openRandomSeq(QString path,
+    static QFile *openRandomSeq(QString path,
                                 QString name,
                                 int lenght);
 
