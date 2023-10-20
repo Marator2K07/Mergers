@@ -41,12 +41,14 @@ void Runs::setRunner(Runner *runner,
         runner->setPos(0);
     }
     runner->setEor(runner->getEof());
-    runner->setFirst(new int);
+    runner->setFirst(0);
     // считываем первое число из последовательности
     Runs::readIntFromRunnerPos(runner, *runner->getFirst());
 }
 
-void Runs::readIntFromRunnerPos(Runner *runner, int &num)
+void Runs::readIntFromRunnerPos(Runner *runner,
+                                int &num,
+                                bool posMove)
 {
     QFile *file = runner->getFile();
     if (file == nullptr)
@@ -58,6 +60,8 @@ void Runs::readIntFromRunnerPos(Runner *runner, int &num)
     QString thisNum;
     if (file->seek(runner->getPos())) {
         stream >> thisNum;
+        if (posMove)
+            runner->posMove(QString::number(num).length()+1);
     } else {
         thisNum = "-1";
     }
@@ -66,7 +70,9 @@ void Runs::readIntFromRunnerPos(Runner *runner, int &num)
     num = stoi(thisNum.toStdString());
 }
 
-void Runs::writeIntToRunnerPos(Runner *runner, int num)
+void Runs::writeIntToRunnerPos(Runner *runner,
+                               int num,
+                               bool posMove)
 {
     QFile *file = runner->getFile();
     if (file == nullptr)
@@ -80,15 +86,18 @@ void Runs::writeIntToRunnerPos(Runner *runner, int num)
     if (file->seek(runner->getPos())) {
         stream << num << ' ';
     }
+    // смещаем позицию далее после записи в эту позицию
+    if (posMove)
+        runner->posMove(QString::number(num).length()+1);
 
     file->close();
 }
 
 void Runs::copy(Runner *src, Runner *dest)
 {
-    dest->setFirst(src->getFirst());
-    Runs::writeIntToRunnerPos(dest, *dest->getFirst());
-    Runs::readIntFromRunnerPos(src, *src->getFirst());
+    dest->setFirst(*src->getFirst());
+    Runs::writeIntToRunnerPos(dest, *dest->getFirst(), true);
+    Runs::readIntFromRunnerPos(src, *src->getFirst(), true);
     src->setEor(src->getEof() || (*src->getFirst() < *dest->getFirst()));
 }
 

@@ -38,12 +38,16 @@ public:
     ///
     /// \brief readIntFromRunnerPos
     /// чтение числа из файла с текущей позиции
-    static void readIntFromRunnerPos(Runner *runner, int &num);
+    static void readIntFromRunnerPos(Runner *runner,
+                                     int &num,
+                                     bool posMove = false);
 
     ///
     /// \brief writeIntFromRunnerPos
     /// запись числа в текущую позицию ползунка файла
-    static void writeIntToRunnerPos(Runner *runner, int num);
+    static void writeIntToRunnerPos(Runner *runner,
+                                    int num,
+                                    bool posMove = false);
 
     ///
     /// \brief copy
