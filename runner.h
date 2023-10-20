@@ -25,6 +25,8 @@ public:
     void setEof(bool newEof);
     bool getEor() const;
     void setEor(bool newEor);
+
+    void posMove(short shift);
 };
 
 #endif // RUNNER_H

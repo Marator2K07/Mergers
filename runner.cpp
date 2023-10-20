@@ -50,6 +50,11 @@ void Runner::setEor(bool newEor)
     eor = newEor;
 }
 
+void Runner::posMove(short shift)
+{
+    pos += shift;
+}
+
 Runner::Runner()
 {
 
