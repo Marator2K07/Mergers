@@ -86,6 +86,13 @@ void Runs::copy(Runner *src, Runner *dest)
     src->setEor(src->getEof() || (*src->getFirst() < *dest->getFirst()));
 }
 
+void Runs::copyRun(Runner *src, Runner *dest)
+{
+    do {
+        Runs::copy(src, dest);
+    } while (!src->getEor());
+}
+
 void Runs::writeSeq(QFile *file)
 {
     if (file == nullptr)

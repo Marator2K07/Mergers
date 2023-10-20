@@ -46,6 +46,11 @@ public:
     static void copy(Runner *src, Runner *dest);
 
     ///
+    /// \brief copyRun
+    /// копирование серии в последовательности
+    static void copyRun(Runner *src, Runner *dest);
+
+    ///
     /// \brief writeSeq
     /// вывод текущего файла с метками уже
     /// отсортированных частей для этой последовательности
