@@ -60,18 +60,21 @@ void Runs::readIntFromRunnerPos(Runner *runner,
     // считываем число с текущей позиции
     QTextStream stream(file);
     QString thisNum;
-    if (file->seek(runner->getPos())) {
+    if (stream.seek(runner->getPos())) {
         stream >> thisNum;
         if (posMove)
             runner->posMove(thisNum.length()+1);
-    } else {
-        thisNum = "0";
     }
     // ставим метку у бегунка, конец ли это файла или нет и закрываем его
     runner->setEof(stream.atEnd());
     file->close();
-    // наконец пишем результат операции
-    num = stoi(thisNum.toStdString());
+    // записываем прочитанное число при успешном исходе
+    // или просто забиваем число нулем при плохом исходе
+    if (!runner->getEof()) {
+        num = stoi(thisNum.toStdString());
+    } else {
+        num = 0;
+    }
 }
 
 void Runs::writeIntToRunnerPos(Runner *runner,
