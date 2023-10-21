@@ -42,7 +42,7 @@ void Runs::setRunner(Runner *runner,
     }
     runner->setFirst(0);
     // считываем первое число из последовательности
-    Runs::readIntFromRunnerPos(runner, *runner->getFirst());
+    Runs::readIntFromRunnerPos(runner, *runner->getFirst(), true);
     // а потом ставим метку возможного окончания серии
     runner->setEor(runner->getEof());
 }
@@ -63,7 +63,7 @@ void Runs::readIntFromRunnerPos(Runner *runner,
     if (file->seek(runner->getPos())) {
         stream >> thisNum;
         if (posMove)
-            runner->posMove(QString::number(num).length()+1);
+            runner->posMove(thisNum.length()+1);
     } else {
         thisNum = "0";
     }
