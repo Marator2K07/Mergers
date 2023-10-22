@@ -32,6 +32,22 @@ void SequenceSorting::NaturalMerge(QFile *src)
         Runs::setRunner(r1 ,f1, 0);
         f2 = Runs::newFile("D:", "f2.txt");
         Runs::setRunner(r2, f2, 0);
+        // сливаем из r0 и r1 в r2
+        L = 0;
+        do {
+            do {
+                if (*r0->getFirst() < *r1->getFirst()) {
+                    Runs::copy(r0, r2);
+                    if (r0->getEor())
+                        Runs::copyRun(r1, r2);
+                } else {
+                    Runs::copy(r1, r2);
+                    if (r1->getEor())
+                        Runs::copyRun(r0, r2);
+                }
+            } while (r0->getEor() && !r1->getEor());
+            L++;
+        } while (!r0->getEof() || !r1->getEof());
 
     //} while (L != 1);
     /*
