@@ -48,7 +48,15 @@ void SequenceSorting::NaturalMerge(QFile *src)
             } while (!r0->getEor() && !r1->getEor());
             L++;
         } while (!r0->getEof() && !r1->getEof());
-
+        // копируем остатки
+        while (!r0->getEof()) {
+            Runs::copyRun(r0, r2);
+            L++;
+        }
+        while (!r1->getEof()) {
+            Runs::copyRun(r1, r2);
+            L++;
+        }
 
     //} while (L != 1);
 
