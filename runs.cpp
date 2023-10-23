@@ -1,9 +1,13 @@
 #include "runs.h"
 
-QFile *Runs::newFile(QString path, QString name)
+void Runs::newFile(QFile *file,
+                   QString path,
+                   QString name)
 {
     QString filePath = path + '/' + name;
-    return new QFile(filePath);
+    // очищаем файл в любом случае
+    file->setFileName(filePath);
+    file->remove();
 }
 
 QFile *Runs::openRandomSeq(QString path,

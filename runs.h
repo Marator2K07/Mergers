@@ -18,8 +18,10 @@ class Runs
 public:
     ///
     /// \brief newFile
-    /// метод создания и инициализации нового файла
-    static QFile *newFile(QString path, QString name);
+    /// метод инициализации нового файла
+    static void newFile(QFile *file,
+                        QString path,
+                        QString name);
 
     ///
     /// \brief openRandomSeq
