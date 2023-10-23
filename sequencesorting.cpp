@@ -3,20 +3,20 @@
 void SequenceSorting::NaturalMerge(QFile *src)
 {
     int L = -1; // число серий после слияния
-    QFile *f0;
-    QFile *f1;
-    QFile *f2;
+    QFile *f0 = new QFile;
+    QFile *f1 = new QFile;
+    QFile *f2 = new QFile;
     // создание бегунков для файлов выше
     Runner *r0 = new Runner;
     Runner *r1 = new Runner;
     Runner *r2 = new Runner;
     // инициализируем бегунок с помощью файла источника
     Runs::setRunner(r2, src, 0);
-
-    //do {
+    // основная часть алгоритма
+    do {
         // инициализируем вспомогательные файлы
-        f0 = Runs::newFile("D:", "f0.txt");
-        f1 = Runs::newFile("D:", "f1.txt");
+        Runs::newFile(f0, "D:", "f0.txt");
+        Runs::newFile(f1, "D:", "f1.txt");
         // ставим бегунки в этих файлах на нулевые позиции
         Runs::setRunner(r0, f0, 0);
         Runs::setRunner(r1, f1, 0);
@@ -30,7 +30,7 @@ void SequenceSorting::NaturalMerge(QFile *src)
         // подготовка перед будущим слиянием файлов
         Runs::setRunner(r0, f0, 0);
         Runs::setRunner(r1 ,f1, 0);
-        f2 = Runs::newFile("D:", "result.txt");
+        Runs::newFile(f2, "D:", "result.txt");
         Runs::setRunner(r2, f2, 0);
         // сливаем из r0 и r1 в r2
         L = 0;
@@ -57,13 +57,16 @@ void SequenceSorting::NaturalMerge(QFile *src)
             Runs::copyRun(r1, r2);
             L++;
         }
+        Runs::setRunner(r2, f2, 0);
+    } while (L != 1);
 
-    //} while (L != 1);
+    delete f0;
+    delete f1;
+    delete f2;
 
-    //f0->remove();
-    //f1->remove();
-    //f2->remove();
-
+    delete r0;
+    delete r1;
+    delete r2;
 }
 
 SequenceSorting::SequenceSorting()
