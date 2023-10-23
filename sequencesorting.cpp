@@ -30,7 +30,7 @@ void SequenceSorting::NaturalMerge(QFile *src)
         // подготовка перед будущим слиянием файлов
         Runs::setRunner(r0, f0, 0);
         Runs::setRunner(r1 ,f1, 0);
-        f2 = Runs::newFile("D:", "f2.txt");
+        f2 = Runs::newFile("D:", "result.txt");
         Runs::setRunner(r2, f2, 0);
         // сливаем из r0 и r1 в r2
         L = 0;
@@ -45,14 +45,16 @@ void SequenceSorting::NaturalMerge(QFile *src)
                     if (r1->getEor())
                         Runs::copyRun(r0, r2);
                 }
-            } while (r0->getEor() && !r1->getEor());
+            } while (!r0->getEor() && !r1->getEor());
             L++;
-        } while (!r0->getEof() || !r1->getEof());
+        } while (!r0->getEof() && !r1->getEof());
+
 
     //} while (L != 1);
-    /*
 
-    */
+    //f0->remove();
+    //f1->remove();
+    //f2->remove();
 
 }
 
