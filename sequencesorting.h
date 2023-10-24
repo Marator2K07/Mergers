@@ -17,7 +17,7 @@ public:
     ///
     /// \brief BalancedMerge
     /// сортировка сбалансированными слияниями
-    static void BalancedMerge(QFile* src);
+    static void BalancedMerge(QFile* src, int N);
 
     SequenceSorting();
 };

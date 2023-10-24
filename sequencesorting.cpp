@@ -69,8 +69,20 @@ void SequenceSorting::NaturalMerge(QFile *src)
     delete r2;
 }
 
-void SequenceSorting::BalancedMerge(QFile *src)
+void SequenceSorting::BalancedMerge(QFile *src, int N)
 {
+    int L; // число распределенных серий
+    int k1; // число источников
+    int k2; // число реально доступных источников в данный момент
+    int K1;
+    int t[N]; // вспомогательный массив для отображения индексов
+    Runner *R = new Runner; // бегунок для работы с входными данными
+    // создание файлов приемников/источников
+    QFile *f[N];
+    QFile *g[N];
+    // создание бегунков для файлов приемников/источников
+    Runner *r[N];
+    Runner *w[N];
 
 }
 
