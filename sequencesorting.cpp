@@ -107,6 +107,20 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
             j = 0;
         }
     } while (!R->getEof());
+    // процесс самого слияния
+    // do {
+        if (L < N) {
+            k1 = L;
+        } else {
+            k1 = N;
+        }
+        K1 = k1;
+        // инициализируем и устанавливаем бегунки источники
+        for (int i = 0; i < k1; ++i) {
+            r[i] = new Runner;
+            Runs::setRunner(r[i], g[i], 0);
+        }
+    // } while (L != 1);
 }
 
 SequenceSorting::SequenceSorting()
