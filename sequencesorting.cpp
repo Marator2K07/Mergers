@@ -71,6 +71,7 @@ void SequenceSorting::NaturalMerge(QFile *src)
 
 void SequenceSorting::BalancedMerge(QFile *src, int N)
 {
+    // подготовка
     int L; // число распределенных серий
     int k1; // число источников
     int k2; // число реально доступных источников в данный момент
@@ -84,6 +85,13 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
     Runner *r[N];
     Runner *w[N];
 
+    // основной алгоритм начинается отсюда
+    Runs::setRunner(R, src, 0);
+    // проинициализируем половину файлов и бегунков к ним
+    for (int i = 0; i < N-1; ++i) {
+        Runs::newFile(g[i], "D:", i+"g.txt");
+        Runs::setRunner(w[i], g[i], 0);
+    }
 }
 
 SequenceSorting::SequenceSorting()
