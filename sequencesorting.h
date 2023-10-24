@@ -14,6 +14,11 @@ public:
     /// сортировка естественными слияниями
     static void NaturalMerge(QFile *src);
 
+    ///
+    /// \brief BalancedMerge
+    /// сортировка сбалансированными слияниями
+    static void BalancedMerge(QFile* src);
+
     SequenceSorting();
 };
 

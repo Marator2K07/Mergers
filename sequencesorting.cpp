@@ -69,6 +69,11 @@ void SequenceSorting::NaturalMerge(QFile *src)
     delete r2;
 }
 
+void SequenceSorting::BalancedMerge(QFile *src)
+{
+
+}
+
 SequenceSorting::SequenceSorting()
 {
 }
