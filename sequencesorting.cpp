@@ -88,12 +88,25 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
     // основной алгоритм начинается отсюда
     Runs::setRunner(R, src, 0);
     // проинициализируем половину файлов и бегунков к ним
-    for (int i = 0; i < N-1; ++i) {
+    for (int i = 0; i < N; ++i) {
         g[i] = new QFile;
         w[i] = new Runner;
         Runs::newFile(g[i], "D:", QString("%1_g.txt").arg(i));
         Runs::setRunner(w[i], g[i], 0);
     }
+    // распределяем начальные серии из src по файлам g[i]
+    int j = 0;
+    L = 0;
+    do {
+        do {
+            Runs::copy(R, w[j]);
+        } while (!R->getEor());
+        L++;
+        j++;
+        if (j == N) {
+            j = 0;
+        }
+    } while (!R->getEof());
 }
 
 SequenceSorting::SequenceSorting()
