@@ -91,7 +91,7 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
     for (int i = 0; i < N; ++i) {
         g[i] = new QFile;
         w[i] = new Runner;
-        Runs::newFile(g[i], "D:", QString("%1_g.txt").arg(i));
+        Runs::newFile(g[i], "D:", QString("%1_startSeq.txt").arg(i));
         Runs::setRunner(w[i], g[i], 0);
     }
     // распределяем начальные серии из src по файлам g[i]
@@ -119,6 +119,11 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
         for (int i = 0; i < k1; ++i) {
             r[i] = new Runner;
             Runs::setRunner(r[i], g[i], 0);
+        }
+        // устанавливаем бегунки приемники в свежий файл
+        for (int i = 0; i < k1; ++i) {
+            Runs::newFile(g[i], "D:", QString("%1_tempSeq.txt").arg(i));
+            Runs::setRunner(w[i], g[i], 0);
         }
     // } while (L != 1);
 }
