@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     QFile *newFile = Runs::openRandomSeq("D:","outR.txt", 22);
-    SequenceSorting::NaturalMerge(newFile);
+    SequenceSorting::BalancedMerge(newFile, 4);
 
     //Runner *r = new Runner();
     //Runs::setRunner(r, newFile, 0);
