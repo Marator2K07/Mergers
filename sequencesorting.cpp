@@ -84,13 +84,18 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
     // создание бегунков для файлов приемников/источников
     Runner *r[N];
     Runner *w[N];
+    // стартовая инициализация переменных массивов указателей
+    for (int i = 0; i < N; ++i) {
+        f[i] = new QFile;
+        g[i] = new QFile;
+        r[i] = new Runner;
+        w[i] = new Runner;
+    }
 
     // основной алгоритм начинается отсюда
     Runs::setRunner(R, src, 0);
-    // проинициализируем половину файлов и бегунков к ним
+    // создаем файл и ставим бегунок к нему
     for (int i = 0; i < N; ++i) {
-        g[i] = new QFile;
-        w[i] = new Runner;
         Runs::newFile(g[i], "D:", QString("%1_startSeq.txt").arg(i));
         Runs::setRunner(w[i], g[i], 0);
     }
@@ -115,9 +120,8 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
             k1 = N;
         }
         K1 = k1;
-        // инициализируем и устанавливаем бегунки источники
+        // устанавливаем бегунки источники
         for (int i = 0; i < k1; ++i) {
-            r[i] = new Runner;
             Runs::setRunner(r[i], g[i], 0);
         }
         // устанавливаем бегунки приемники в свежий файл
