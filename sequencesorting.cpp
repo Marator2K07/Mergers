@@ -180,7 +180,7 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
             }
         } while (k1 != 0);
         progress++;
-    } while (progress != 2);
+    } while (L != 1);
 }
 
 SequenceSorting::SequenceSorting()
