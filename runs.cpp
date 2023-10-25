@@ -43,12 +43,8 @@ void Runs::setRunner(Runner *runner,
     // работы с бегунком
     runner->setFile(file);
     runner->setEof(false);
-    if (runner->getPos() >= 0) {
-        if (runner->getPos() <= file->size()) {
-            runner->setPos(pos);
-        } else {
-            runner->setPos(file->size());
-        }
+    if (file->size() >= pos && pos >= 0) {
+        runner->setPos(pos);
     } else {
         runner->setPos(0);
     }
