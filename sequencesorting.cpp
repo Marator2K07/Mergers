@@ -72,6 +72,7 @@ void SequenceSorting::NaturalMerge(QFile *src)
 void SequenceSorting::BalancedMerge(QFile *src, int N)
 {
     // подготовка
+    int progress; // чтобы знать номер итерации основного цикла слияния
     int L; // число распределенных серий
     int k1; // число источников
     int k2; // число реально доступных источников в данный момент
@@ -96,7 +97,7 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
     Runs::setRunner(R, src, 0);
     // создаем файл и ставим бегунок к нему
     for (int i = 0; i < N; ++i) {
-        Runs::newFile(g[i], "D:", QString("%1_startSeq.txt").arg(i));
+        Runs::newFile(g[i], "D:", QString("0_%1_Seq.txt").arg(i));
         Runs::setRunner(w[i], g[i], 0);
     }
     // распределяем начальные серии из src по файлам g[i]
@@ -112,21 +113,23 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
             j = 0;
         }
     } while (!R->getEof());
-    // процесс самого слияния
-    // do {
+    // процесс самого слияния (основной цикл слияния)
+    progress = 0;
+    do {
         if (L < N) {
             k1 = L;
         } else {
             k1 = N;
         }
         K1 = k1;
-        // устанавливаем бегунки источники
+        // устанавливаем бегунки источники в прошлый файл
         for (int i = 0; i < k1; ++i) {
+            Runs::setFile(g[i], "D:", QString("%1_%2_Seq.txt").arg(progress).arg(i));
             Runs::setRunner(r[i], g[i], 0);
         }
         // устанавливаем бегунки приемники в свежий файл
         for (int i = 0; i < k1; ++i) {
-            Runs::newFile(f[i], "D:", QString("%1_tempSeq.txt").arg(i));
+            Runs::newFile(f[i], "D:", QString("%1_%2_Seq.txt").arg(progress+1).arg(i));
             Runs::setRunner(w[i], f[i], 0);
         }
         // подготовка к слиянию
@@ -176,8 +179,8 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
                 j = 0;
             }
         } while (k1 != 0);
-
-    // } while (L != 1);
+        progress++;
+    } while (progress != 2);
 }
 
 SequenceSorting::SequenceSorting()
