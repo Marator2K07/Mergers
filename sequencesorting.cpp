@@ -72,40 +72,40 @@ void SequenceSorting::NaturalMerge(QFile *src)
 void SequenceSorting::BalancedMerge(QFile *src, int N)
 {
     // подготовка
-    int progress; // чтобы знать номер итерации основного цикла слияния
+    int progress; // номер итерации основного цикла слияния
     int L; // число распределенных серий
     int k1; // число источников
     int k2; // число реально доступных источников в данный момент
-    int K1;
     int t[N]; // вспомогательный массив для отображения индексов
     Runner *R = new Runner; // бегунок для работы с входными данными
-    // создание файлов приемников/источников
-    QFile *f[N];
-    QFile *g[N];
-    // создание бегунков для файлов приемников/источников
-    Runner *r[N];
-    Runner *w[N];
+    // создание файлов источников и приемников
+    QFile *srcFiles[N];
+    QFile *rcvrFiles[N];
+    // создание бегунков для файлов источников и приемников
+    Runner *srcRunners[N];
+    Runner *rcvrRunners[N];
+
     // стартовая инициализация переменных массивов указателей
     for (int i = 0; i < N; ++i) {
-        f[i] = new QFile;
-        g[i] = new QFile;
-        r[i] = new Runner;
-        w[i] = new Runner;
+        srcFiles[i] = new QFile;
+        rcvrFiles[i] = new QFile;
+        srcRunners[i] = new Runner;
+        rcvrRunners[i] = new Runner;
     }
 
     // основной алгоритм начинается отсюда
     Runs::setRunner(R, src, 0);
     // создаем файл и ставим бегунок к нему
     for (int i = 0; i < N; ++i) {
-        Runs::newFile(g[i], "D:", QString("0_%1_Seq.txt").arg(i));
-        Runs::setRunner(w[i], g[i], 0);
+        Runs::newFile(srcFiles[i], "D:", QString("0_%1_Seq.txt").arg(i));
+        Runs::setRunner(rcvrRunners[i], srcFiles[i], 0);
     }
-    // распределяем начальные серии из src по файлам g[i]
+    // распределяем начальные серии из src по файлам srcFiles[i]
     int j = 0; // вспомогательный индекс
     L = 0;
     do {
         do {
-            Runs::copy(R, w[j]);
+            Runs::copy(R, rcvrRunners[j]);
         } while (!R->getEor());
         L++;
         j++;
@@ -114,6 +114,7 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
         }
     } while (!R->getEof());
     // процесс самого слияния (основной цикл слияния)
+    int K1; // временное хранение
     progress = 0;
     do {
         if (L < N) {
@@ -124,13 +125,15 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
         K1 = k1;
         // устанавливаем бегунки источники в прошлый файл
         for (int i = 0; i < k1; ++i) {
-            Runs::setFile(g[i], "D:", QString("%1_%2_Seq.txt").arg(progress).arg(i));
-            Runs::setRunner(r[i], g[i], 0);
+            Runs::setFile(srcFiles[i], "D:", QString("%1_%2_Seq.txt").
+                                             arg(progress).arg(i));
+            Runs::setRunner(srcRunners[i], srcFiles[i], 0);
         }
         // устанавливаем бегунки приемники в свежий файл
         for (int i = 0; i < k1; ++i) {
-            Runs::newFile(f[i], "D:", QString("%1_%2_Seq.txt").arg(progress+1).arg(i));
-            Runs::setRunner(w[i], f[i], 0);
+            Runs::newFile(rcvrFiles[i], "D:", QString("%1_%2_Seq.txt").
+                                              arg(progress+1).arg(i));
+            Runs::setRunner(rcvrRunners[i], rcvrFiles[i], 0);
         }
         // подготовка к слиянию
         for (int i = 0; i < k1; ++i) {
@@ -151,23 +154,23 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
             // в случае чего делаем необходимые преобразования
             do {
                 m = 0;
-                min = *r[t[0]]->getFirst();
+                min = *srcRunners[t[0]]->getFirst();
                 o = 1;
                 while (o < k2) {
-                    x = *r[t[o]]->getFirst();
+                    x = *srcRunners[t[o]]->getFirst();
                     if (x < min) {
                         min = x;
                         m = o;
                     }
                     o++;
                 }
-                Runs::copy(r[t[m]], w[j]);
-                if (r[t[m]]->getEof()) {
+                Runs::copy(srcRunners[t[m]], rcvrRunners[j]);
+                if (srcRunners[t[m]]->getEof()) {
                     k1--;
                     k2--;
                     t[m] = t[k2];
                     t[k2] = t[k1];
-                } else if (r[t[m]]->getEor()) {
+                } else if (srcRunners[t[m]]->getEor()) {
                     k2--;
                     int temp = t[m];
                     t[m] = t[k2];
