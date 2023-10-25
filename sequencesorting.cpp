@@ -184,6 +184,14 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
         } while (k1 != 0);
         progress++;
     } while (L != 1);
+
+    // освобождение памяти
+    for (int i = 0; i < N; ++i) {
+        delete srcFiles[i];
+        delete rcvrFiles[i];
+        delete srcRunners[i];
+        delete rcvrRunners[i];
+    }
 }
 
 SequenceSorting::SequenceSorting()
