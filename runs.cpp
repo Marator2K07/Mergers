@@ -10,6 +10,14 @@ void Runs::newFile(QFile *file,
     file->remove();
 }
 
+void Runs::setFile(QFile *file,
+                   QString path,
+                   QString name)
+{
+    QString filePath = path + '/' + name;
+    file->setFileName(filePath);
+}
+
 QFile *Runs::openRandomSeq(QString path,
                            QString name,
                            int lenght)

@@ -24,6 +24,13 @@ public:
                         QString name);
 
     ///
+    /// \brief setFile
+    /// метод выбора файла через его путь/имя
+    static void setFile(QFile *file,
+                        QString path,
+                        QString name);
+
+    ///
     /// \brief openRandomSeq
     /// создает файл со случайным набором чисел
     static QFile *openRandomSeq(QString path,
