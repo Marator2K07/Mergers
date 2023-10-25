@@ -150,7 +150,7 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
                 m = 0;
                 min = *r[t[0]]->getFirst();
                 o = 1;
-                while (0 < k2) {
+                while (o < k2) {
                     x = *r[t[o]]->getFirst();
                     if (x < min) {
                         min = x;
