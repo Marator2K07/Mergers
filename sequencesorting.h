@@ -18,7 +18,9 @@ public:
     ///
     /// \brief BalancedMerge
     /// сортировка сбалансированными слияниями
-    static QFile* BalancedMerge(QFile* src, int N);
+    static QFile* BalancedMerge(QFile* src,
+                                QString path,
+                                int N);
 
     SequenceSorting();
 };

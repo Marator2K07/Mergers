@@ -69,7 +69,9 @@ void SequenceSorting::NaturalMerge(QFile *src)
     delete r2;
 }
 
-QFile *SequenceSorting::BalancedMerge(QFile *src, int N)
+QFile *SequenceSorting::BalancedMerge(QFile *src,
+                                      QString path,
+                                      int N)
 {
     // подготовка
     int progress; // номер итерации основного цикла слияния
@@ -99,7 +101,7 @@ QFile *SequenceSorting::BalancedMerge(QFile *src, int N)
     Runs::setRunner(R, src, 0);
     // создаем файл и ставим бегунок к нему
     for (int i = 0; i < N; ++i) {
-        Runs::newFile(srcFiles[i], "D:", QString("0_%1_Seq.txt").arg(i));
+        Runs::newFile(srcFiles[i], path, QString("0_%1_Seq.txt").arg(i));
         Runs::setRunner(rcvrRunners[i], srcFiles[i], 0);
     }
     // распределяем начальные серии из src по файлам srcFiles[i]
@@ -131,13 +133,13 @@ QFile *SequenceSorting::BalancedMerge(QFile *src, int N)
         for (int i = 0; i < k1; ++i) {
             QString fileName = QString("%1_%2_Seq.txt").
                                arg(progress).arg(i);
-            Runs::setFile(srcFiles[i], "D:", fileName);
+            Runs::setFile(srcFiles[i], path, fileName);
             Runs::setRunner(srcRunners[i], srcFiles[i], 0);
             oldFiles.append(fileName);
         }
         // устанавливаем бегунки приемники в свежий файл
         for (int i = 0; i < k1; ++i) {
-            Runs::newFile(rcvrFiles[i], "D:", QString("%1_%2_Seq.txt").
+            Runs::newFile(rcvrFiles[i], path, QString("%1_%2_Seq.txt").
                                               arg(progress+1).arg(i));
             Runs::setRunner(rcvrRunners[i], rcvrFiles[i], 0);
         }
@@ -197,7 +199,7 @@ QFile *SequenceSorting::BalancedMerge(QFile *src, int N)
 
     // чистка временных файлов
     foreach (QString file, oldFiles) {
-        Runs::newFile(srcFiles[0], "D:", file);
+        Runs::newFile(srcFiles[0], path, file);
         oldFiles.dequeue();
     }
     // освобождение памяти
