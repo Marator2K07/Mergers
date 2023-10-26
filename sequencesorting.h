@@ -2,6 +2,7 @@
 #define SEQUENCESORTING_H
 
 #include "runs.h"
+#include <QQueue>
 
 ///
 /// \brief The SequenceSorting class
