@@ -69,7 +69,7 @@ void SequenceSorting::NaturalMerge(QFile *src)
     delete r2;
 }
 
-void SequenceSorting::BalancedMerge(QFile *src, int N)
+QFile *SequenceSorting::BalancedMerge(QFile *src, int N)
 {
     // подготовка
     int progress; // номер итерации основного цикла слияния
@@ -191,6 +191,10 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
         progress++;
     } while (L != 1);
 
+    // подготовка ответа
+    QFile *resultFile = new QFile;
+    resultFile->setFileName(rcvrFiles[0]->fileName());
+
     // чистка временных файлов
     foreach (QString file, oldFiles) {
         Runs::newFile(srcFiles[0], "D:", file);
@@ -202,7 +206,8 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
         delete rcvrFiles[i];
         delete srcRunners[i];
         delete rcvrRunners[i];
-    }    
+    }
+    return resultFile;
 }
 
 SequenceSorting::SequenceSorting()
