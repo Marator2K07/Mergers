@@ -83,7 +83,7 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
     QFile *rcvrFiles[N];
     // создание бегунков для файлов источников и приемников
     Runner *srcRunners[N];
-    Runner *rcvrRunners[N];
+    Runner *rcvrRunners[N];    
 
     // стартовая инициализация переменных массивов указателей
     for (int i = 0; i < N; ++i) {
@@ -92,6 +92,8 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
         srcRunners[i] = new Runner;
         rcvrRunners[i] = new Runner;
     }
+    // также для будущей очистки ненужных файлов используем очередь
+    QQueue<QString> oldFiles;
 
     // основной алгоритм начинается отсюда
     Runs::setRunner(R, src, 0);
@@ -123,11 +125,15 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
             k1 = N;
         }
         K1 = k1;
-        // устанавливаем бегунки источники в прошлый файл
+        // устанавливаем бегунки источники в прошлый файл и
+        // кидаем названия файлов, которые в будущем устареют,
+        // в очередь
         for (int i = 0; i < k1; ++i) {
-            Runs::setFile(srcFiles[i], "D:", QString("%1_%2_Seq.txt").
-                                             arg(progress).arg(i));
+            QString fileName = QString("%1_%2_Seq.txt").
+                               arg(progress).arg(i);
+            Runs::setFile(srcFiles[i], "D:", fileName);
             Runs::setRunner(srcRunners[i], srcFiles[i], 0);
+            oldFiles.append(fileName);
         }
         // устанавливаем бегунки приемники в свежий файл
         for (int i = 0; i < k1; ++i) {
@@ -185,13 +191,18 @@ void SequenceSorting::BalancedMerge(QFile *src, int N)
         progress++;
     } while (L != 1);
 
+    // чистка временных файлов
+    foreach (QString file, oldFiles) {
+        Runs::newFile(srcFiles[0], "D:", file);
+        oldFiles.dequeue();
+    }
     // освобождение памяти
     for (int i = 0; i < N; ++i) {
         delete srcFiles[i];
         delete rcvrFiles[i];
         delete srcRunners[i];
         delete rcvrRunners[i];
-    }
+    }    
 }
 
 SequenceSorting::SequenceSorting()
