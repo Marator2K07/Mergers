@@ -218,7 +218,9 @@ void SequenceSorting::Polyphase(QFile *src,
 {
     // подготовка
     int j; // индекс текущей принимающей последовательности
+    int &jRef {j}; // ссылка на него
     int level; // номер уровня распределения последовательностей
+    int &levelRef {level}; // ссылка на него
     int a[N]; // массив для отображения идеального количества серий на опр. шаге
     int d[N]; // массив для отображения фиктивного числа серий в определенной итерации
     int ta[N]; // вспомогательный массив для индексов
@@ -245,6 +247,17 @@ void SequenceSorting::Polyphase(QFile *src,
         Runs::newFile(files[i], path, fileName);
         Runs::setRunner(runners[i], files[i], 0);
     }
+    // распределяем начальные серии из файла источника
+    level = 1;
+    j = 0;
+    a[N-1] = 0;
+    d[N-1] = 0;
+    do {
+        Runs::selectRunsReceiver(a, d, N, jRef, levelRef);
+        do {
+            Runs::copy(R, runners[j]);
+        } while (!R->getEor());
+    } while (!R->getEof() && j != N-2);
 }
 
 SequenceSorting::SequenceSorting()
