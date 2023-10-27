@@ -69,6 +69,16 @@ public:
     static void copyRun(Runner *src, Runner *dest);
 
     ///
+    /// \brief selectRunsReceiver
+    /// выбор приемника для очередной серии
+    /// используется только для многофазной сортировки
+    static void selectRunsReceiver(int a[],
+                                   int d[],
+                                   int arrSize,
+                                   int j,
+                                   int level);
+
+    ///
     /// \brief writeSeq
     /// вывод текущего файла с метками уже
     /// отсортированных частей для этой последовательности

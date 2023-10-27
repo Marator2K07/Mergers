@@ -125,6 +125,29 @@ void Runs::copyRun(Runner *src, Runner *dest)
     } while (!src->getEor());
 }
 
+void Runs::selectRunsReceiver(int a[],
+                              int d[],
+                              int arrSize,
+                              int j,
+                              int level)
+{
+    int temp; // вспомогательная переменная
+    if (d[j] < d[j+1]) {
+        j++;
+    } else {
+        if (d[j] == 0) {
+            level++;
+            temp = a[0];
+            for (int i = 0; i < arrSize-1; ++i) {
+                d[i] = temp = a[i+1] - a[i];
+                a[i] = temp + a[i+1];
+            }
+        }
+        j = 0;
+    }
+    d[j]--;
+}
+
 void Runs::writeSeq(QFile *file)
 {
     if (file == nullptr)
