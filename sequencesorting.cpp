@@ -212,6 +212,11 @@ QFile *SequenceSorting::BalancedMerge(QFile *src,
     return resultFile;
 }
 
+void SequenceSorting::Polyphase(QFile *src, QString path, int N)
+{
+
+}
+
 SequenceSorting::SequenceSorting()
 {
 }
