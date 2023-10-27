@@ -75,8 +75,8 @@ public:
     static void selectRunsReceiver(int a[],
                                    int d[],
                                    int arrSize,
-                                   int j,
-                                   int level);
+                                   int &j,
+                                   int &level);
 
     ///
     /// \brief writeSeq
