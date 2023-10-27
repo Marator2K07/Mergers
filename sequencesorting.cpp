@@ -233,6 +233,18 @@ void SequenceSorting::Polyphase(QFile *src,
         files[i] = new QFile;
         runners[i] = new Runner;
     }
+
+    // сам алгоритм начинается отсюда
+    Runs::setRunner(R, src, 0); // ставим бегунок к основному файлу
+    // начальная инициализация и подготовка к организованному
+    // распределению последовательностей из файла-источника
+    for (int i = 0; i < N-1; ++i) {
+        a[i] = 1;
+        d[i] = 1;
+        QString fileName = QString("[%1]_Seq.txt").arg(i);
+        Runs::newFile(files[i], path, fileName);
+        Runs::setRunner(runners[i], files[i], 0);
+    }
 }
 
 SequenceSorting::SequenceSorting()
