@@ -227,6 +227,12 @@ void SequenceSorting::Polyphase(QFile *src,
     // создание файлов и бегунков к ним
     QFile *files[N];
     Runner *runners[N];
+
+    // стартовая инициализация переменных массивов указателей
+    for (int i = 0; i < N; ++i) {
+        files[i] = new QFile;
+        runners[i] = new Runner;
+    }
 }
 
 SequenceSorting::SequenceSorting()
