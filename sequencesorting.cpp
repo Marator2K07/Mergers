@@ -212,9 +212,21 @@ QFile *SequenceSorting::BalancedMerge(QFile *src,
     return resultFile;
 }
 
-void SequenceSorting::Polyphase(QFile *src, QString path, int N)
+void SequenceSorting::Polyphase(QFile *src,
+                                QString path,
+                                int N)
 {
-
+    // подготовка
+    int j; // индекс текущей принимающей последовательности
+    int level; // номер уровня распределения последовательностей
+    int a[N]; // массив для отображения идеального количества серий на опр. шаге
+    int d[N]; // массив для отображения фиктивного числа серий в определенной итерации
+    int ta[N]; // вспомогательный массив для индексов
+    int t[N]; // вспомогательный массив для индексов
+    Runner *R = new Runner; // бегунок для работы с входными данными
+    // создание файлов и бегунков к ним
+    QFile *files[N];
+    Runner *runners[N];
 }
 
 SequenceSorting::SequenceSorting()
