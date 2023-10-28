@@ -254,29 +254,21 @@ void SequenceSorting::Polyphase(QFile *src,
     d[N-1] = 0;
     do {
         Runs::selectRunsReceiver(a, d, N, jRef, levelRef);
-        do {
-            Runs::copy(R, runners[j]);
-        } while (!R->getEor());
+        Runs::copyRun(R, runners[j]);
     } while (!R->getEof() && j != N-2);
     // распределяем оставшиеся серии по определенным правилам,
     // причем избегаем случайной склейки серий!
     while (!R->getEof()) {
         Runs::selectRunsReceiver(a, d, N, jRef, levelRef);
         if (*runners[j]->getFirst() <= *R->getFirst()) {
-            do {
-                Runs::copy(R, runners[j]);
-            } while (!R->getEor());
+            Runs::copyRun(R, runners[j]);
             if (R->getEof()) {
                 d[j]++;
             } else {
-                do {
-                    Runs::copy(R, runners[j]);
-                } while (!R->getEor());
+                Runs::copyRun(R, runners[j]);
             }
         } else {
-            do {
-                Runs::copy(R, runners[j]);
-            } while (!R->getEor());
+            Runs::copyRun(R, runners[j]);
         }
     }
 }
