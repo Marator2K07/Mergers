@@ -271,6 +271,14 @@ void SequenceSorting::Polyphase(QFile *src,
             Runs::copyRun(R, runners[j]);
         }
     }
+    // инициализируем массив вспомогательных индексов и обновляем бегунки
+    for (int i = 0; i < N-1; ++i) {
+        t[i] = i;
+        Runs::setRunner(runners[i], files[i], 0);
+    }
+    t[N-1] = N-1; // не забываем про последний индекс
+
+
 }
 
 SequenceSorting::SequenceSorting()
