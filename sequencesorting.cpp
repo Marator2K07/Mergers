@@ -300,10 +300,31 @@ void SequenceSorting::Polyphase(QFile *src,
                     k++;
                 }
             }
-            // если был хотя-бы одна фиктивная серия,
+            // если была хотя-бы одна фиктивная серия,
             // то делаем вид, что записали ее в приемник
             if (k == 0) {
                 d[N-1]++;
+            }
+            // в остальных случаях сливаем одну реальную серию
+            else {
+                do {
+                    int mx = 0;
+                    int min = *runners[ta[0]]->getFirst();
+                    int i = 1;
+                    while (i < k) {
+                        int x = *runners[ta[i]]->getFirst();
+                        if (x < min) {
+                            min = x;
+                            mx = i;
+                        }
+                        i++;
+                    }
+                    Runs::copy(runners[ta[mx]], runners[t[N-1]]);
+                    if (runners[ta[mx]]->getEor()) {
+                        ta[mx] = ta[k-1];
+                        k--;
+                    }
+                } while (k != 0);
             }
         } while (aTemp != 0);
 
