@@ -277,8 +277,21 @@ void SequenceSorting::Polyphase(QFile *src,
         Runs::setRunner(runners[i], files[i], 0);
     }
     t[N-1] = N-1; // не забываем про последний индекс
+    // далее - сам процесс слияния - сливаем из t[0]...t[N-2] в t[N-1]
+    // в каждый момент времени, один из всех файлов - является
+    // приемников, до тех пор, пока любой другой не опустеет ->
+    // в этом случае он становиться приемником.
+    // do {
+        int aTemp = a[N-2];
+        d[N-1] = 0;
+        // инициализируем файл для приема серий
+        QString fileName = QString("[%1]_Seq.txt").arg(N-1);
+        Runs::newFile(files[t[N-1]], path, fileName);
+        Runs::setRunner(runners[t[N-1]], files[t[N-1]], 0);
+        // сливаем одну серию
 
 
+    // } while (level != 0);
 }
 
 SequenceSorting::SequenceSorting()
