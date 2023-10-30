@@ -281,7 +281,7 @@ void SequenceSorting::Polyphase(QFile *src,
     // в каждый момент времени, один из всех файлов - является
     // приемником, до тех пор, пока любой другой не опустеет ->
     // в этом случае он становиться приемником.
-    // do {
+    do {
         int aTemp = a[N-2];
         d[N-1] = 0;
         // инициализируем файл для приема серий
@@ -344,7 +344,7 @@ void SequenceSorting::Polyphase(QFile *src,
         d[0] = dn;
         a[0] = aTemp;
         level--;
-    // } while (level != 0);
+    } while (level != 0);
 }
 
 SequenceSorting::SequenceSorting()
