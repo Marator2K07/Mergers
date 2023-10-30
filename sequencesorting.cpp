@@ -326,6 +326,7 @@ void SequenceSorting::Polyphase(QFile *src,
                     }
                 } while (k != 0);
             }
+            aTemp--;
         } while (aTemp != 0);
 
     // } while (level != 0);
