@@ -226,6 +226,7 @@ QFile *SequenceSorting::Polyphase(QFile *src,
     int ta[N]; // вспомогательный массив для индексов
     int t[N]; // вспомогательный массив для индексов
     Runner *R = new Runner; // бегунок для работы с входными данными
+    QFile *result; // переменная под ответ
     // создание файлов и бегунков к ним
     QFile *files[N];
     Runner *runners[N];
@@ -288,6 +289,7 @@ QFile *SequenceSorting::Polyphase(QFile *src,
         QString fileName = QString("[%1]_Seq.txt").arg(t[N-1]);
         Runs::newFile(files[t[N-1]], path, fileName);
         Runs::setRunner(runners[t[N-1]], files[t[N-1]], 0);
+        result = files[t[N-1]]; // ставим метку ответа
         // сливаем одну серию
         do {
             // обработка фиктивной части
@@ -346,15 +348,18 @@ QFile *SequenceSorting::Polyphase(QFile *src,
         level--;
     } while (level != 0);
 
-    // освобождение памяти, удаляем все кроме первого файла
-    // т.к. он является ответом и отсортирован
-    for (int i = 1; i < N; ++i) {
-        delete files[i];
+    // освобождение памяти и чистка файлов,
+    // удаляем все кроме файла ответа
+    for (int i = 0; i < N; ++i) {
+        if (files[i] != result) {
+            QString fileName = QString("[%1]_Seq.txt").arg(i);
+            Runs::newFile(files[i], path, fileName);
+            delete files[i];
+        }
         delete runners[i];
     }
-    delete runners[0];
 
-    return files[0];
+    return result;
 }
 
 SequenceSorting::SequenceSorting()
