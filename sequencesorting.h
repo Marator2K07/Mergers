@@ -26,9 +26,9 @@ public:
     /// \brief Polyphase
     /// сортировка последовательностей
     /// многофазным способом
-    static void Polyphase(QFile* src,
-                          QString path,
-                          int N);
+    static QFile *Polyphase(QFile* src,
+                            QString path,
+                            int N);
 
     SequenceSorting();
 };

@@ -212,9 +212,9 @@ QFile *SequenceSorting::BalancedMerge(QFile *src,
     return resultFile;
 }
 
-void SequenceSorting::Polyphase(QFile *src,
-                                QString path,
-                                int N)
+QFile *SequenceSorting::Polyphase(QFile *src,
+                                  QString path,
+                                  int N)
 {
     // подготовка
     int j; // индекс текущей принимающей последовательности
@@ -345,6 +345,16 @@ void SequenceSorting::Polyphase(QFile *src,
         a[0] = aTemp;
         level--;
     } while (level != 0);
+
+    // освобождение памяти, удаляем все кроме первого файла
+    // т.к. он является ответом и отсортирован
+    for (int i = 1; i < N; ++i) {
+        delete files[i];
+        delete runners[i];
+    }
+    delete runners[0];
+
+    return files[0];
 }
 
 SequenceSorting::SequenceSorting()
