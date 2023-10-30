@@ -328,6 +328,22 @@ void SequenceSorting::Polyphase(QFile *src,
             }
             aTemp--;
         } while (aTemp != 0);
+        // ротация последовательностей, в данном случае, после того,
+        // как какой-то из файлов закончился (цикл выше), мы останавливаемся
+        // и производим подготовительные меры для следующего уровня.
+        Runs::setRunner(runners[t[N-1]], files[t[N-1]], 0);
+        int tn = t[N-1];
+        int dn = d[N-1];
+        aTemp = a[N-2];
+        for (int i = N-1; i > 0; --i) {
+            t[i] = t[i-1];
+            d[i] = d[i-1];
+            a[i] = a[i-1] - aTemp;
+        }
+        t[0] = tn;
+        d[0] = dn;
+        a[0] = aTemp;
+        level--;
 
     // } while (level != 0);
 }
