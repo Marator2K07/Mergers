@@ -285,7 +285,7 @@ void SequenceSorting::Polyphase(QFile *src,
         int aTemp = a[N-2];
         d[N-1] = 0;
         // инициализируем файл для приема серий
-        QString fileName = QString("[%1]_Seq.txt").arg(N-1);
+        QString fileName = QString("[%1]_Seq.txt").arg(t[N-1]);
         Runs::newFile(files[t[N-1]], path, fileName);
         Runs::setRunner(runners[t[N-1]], files[t[N-1]], 0);
         // сливаем одну серию
@@ -344,7 +344,6 @@ void SequenceSorting::Polyphase(QFile *src,
         d[0] = dn;
         a[0] = aTemp;
         level--;
-
     // } while (level != 0);
 }
 
