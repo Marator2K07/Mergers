@@ -223,7 +223,7 @@ QFile *SequenceSorting::Polyphase(QFile *src,
     int &levelRef {level}; // ссылка на него
     int a[N]; // массив для отображения идеального количества серий на опр. шаге
     int d[N]; // массив для отображения фиктивного числа серий в определенной итерации
-    int ta[N]; // вспомогательный массив для индексов
+    int ta[N]; // вспомогательный массив индексов для реальных серий
     int t[N]; // вспомогательный массив для индексов
     Runner *R = new Runner; // бегунок для работы с входными данными
     QFile *result; // переменная под ответ
@@ -283,7 +283,7 @@ QFile *SequenceSorting::Polyphase(QFile *src,
     // приемником, до тех пор, пока любой другой не опустеет ->
     // в этом случае он становиться приемником.
     do {
-        int aTemp = a[N-2];
+        int realRunsCount = a[N-2];
         d[N-1] = 0;
         // инициализируем файл для приема серий
         QString fileName = QString("[%1]_Seq.txt").arg(t[N-1]);
@@ -293,58 +293,58 @@ QFile *SequenceSorting::Polyphase(QFile *src,
         // сливаем одну серию
         do {
             // обработка фиктивной части
-            int k = 0;
+            int realRunsIndex = 0;
             for (int i = 0; i < N-1; ++i) {
                 if (d[i] > 0) {
                     d[i]--;
                 } else {
-                    ta[k] = t[i];
-                    k++;
+                    ta[realRunsIndex] = t[i];
+                    realRunsIndex++;
                 }
             }
-            // если была хотя-бы одна фиктивная серия,
-            // то делаем вид, что записали ее в приемник
-            if (k == 0) {
+            // если не было ни одной реальной серии
+            // то делаем вид, что записали фиктивную в приемник
+            if (realRunsIndex == 0) {
                 d[N-1]++;
             }
             // в остальных случаях сливаем одну реальную серию
             else {
                 do {
-                    int mx = 0;
+                    int minIndex = 0;
                     int min = *runners[ta[0]]->getFirst();
                     int i = 1;
-                    while (i < k) {
+                    while (i < realRunsIndex) {
                         int x = *runners[ta[i]]->getFirst();
                         if (x < min) {
                             min = x;
-                            mx = i;
+                            minIndex = i;
                         }
                         i++;
                     }
-                    Runs::copy(runners[ta[mx]], runners[t[N-1]]);
-                    if (runners[ta[mx]]->getEor()) {
-                        ta[mx] = ta[k-1];
-                        k--;
+                    Runs::copy(runners[ta[minIndex]], runners[t[N-1]]);
+                    if (runners[ta[minIndex]]->getEor()) {
+                        ta[minIndex] = ta[realRunsIndex-1];
+                        realRunsIndex--;
                     }
-                } while (k != 0);
+                } while (realRunsIndex != 0);
             }
-            aTemp--;
-        } while (aTemp != 0);
+            realRunsCount--;
+        } while (realRunsCount != 0);
         // ротация последовательностей, в данном случае, после того,
         // как какой-то из файлов закончился (цикл выше), мы останавливаемся
         // и производим подготовительные меры для следующего уровня.
         Runs::setRunner(runners[t[N-1]], files[t[N-1]], 0);
-        int tn = t[N-1];
-        int dn = d[N-1];
-        aTemp = a[N-2];
+        int tTemp = t[N-1];
+        int dTemp = d[N-1];
+        realRunsCount = a[N-2];
         for (int i = N-1; i > 0; --i) {
             t[i] = t[i-1];
             d[i] = d[i-1];
-            a[i] = a[i-1] - aTemp;
+            a[i] = a[i-1] - realRunsCount;
         }
-        t[0] = tn;
-        d[0] = dn;
-        a[0] = aTemp;
+        t[0] = tTemp;
+        d[0] = dTemp;
+        a[0] = realRunsCount;
         level--;
     } while (level != 0);
 
