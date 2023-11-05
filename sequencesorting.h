@@ -16,7 +16,7 @@ private:
     /// двоичной кучи (условной пирамиды)
     void sift(int l,
               int r,
-              int *heap);
+              int heap[]);
 
 public:
     ///

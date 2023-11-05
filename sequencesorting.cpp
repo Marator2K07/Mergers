@@ -2,8 +2,11 @@
 
 void SequenceSorting::sift(int l,
                            int r,
-                           int *heap)
+                           int heap[])
 {
+    int i = L;
+    int j = 2*L+1;
+    int x = heap[i];
 
 }
 
