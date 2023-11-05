@@ -4,10 +4,26 @@ void SequenceSorting::sift(int l,
                            int r,
                            int heap[])
 {
-    int i = L;
-    int j = 2*L+1;
+    int i = l;
+    int j = 2*l+1;
     int x = heap[i]; // запоминаем верхушку пирамиды/подпирамиды
-
+    // после этой строки индекс будет указывать на наибольшего потомка
+    if (j < r && heap[j] > heap[j+1]) {
+        j++;
+    }
+    // само "просеивание"
+    while (j <= r && x > heap[j]) {
+        // ставим наибольший элемент наверх,
+        // устанавливаем новые границы
+        heap[i] = heap[j];
+        i = j;
+        j = 2*j+1;
+        // снова, как и в начале выбираем наибольший потомок
+        if (j < r && heap[j] > heap[j+1]) {
+            j++;
+        }
+    }
+    heap[i] = x;
 }
 
 void SequenceSorting::NaturalMerge(QFile *src)
