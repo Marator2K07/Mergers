@@ -9,6 +9,15 @@
 /// класс со статическими методами сортировки последовательностей
 class SequenceSorting
 {
+private:
+    ///
+    /// \brief sift
+    /// метод просеивания массива до состояния
+    /// двоичной кучи (условной пирамиды)
+    void sift(int l,
+              int r,
+              int *heap);
+
 public:
     ///
     /// \brief NaturalMerge

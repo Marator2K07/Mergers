@@ -1,5 +1,12 @@
 #include "sequencesorting.h"
 
+void SequenceSorting::sift(int l,
+                           int r,
+                           int *heap)
+{
+
+}
+
 void SequenceSorting::NaturalMerge(QFile *src)
 {
     int L = -1; // число серий после слияния
