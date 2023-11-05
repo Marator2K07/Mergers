@@ -6,7 +6,7 @@ void SequenceSorting::sift(int l,
 {
     int i = L;
     int j = 2*L+1;
-    int x = heap[i];
+    int x = heap[i]; // запоминаем верхушку пирамиды/подпирамиды
 
 }
 
