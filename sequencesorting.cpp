@@ -396,6 +396,8 @@ void SequenceSorting::distribute(QFile *src,
     const int m = 16; // размер массива для пирамиды
     int mh = m / 2; // размер (высота) пирамиды
     int heap[m]; // сама куча (пирамида)
+    int x; // буффер для работы с пирамидой
+    int &xRef {x}; // ссылка на него
     int l; // левая граница нужного участка массива
     int r; // правая граница нужного участка массива
     // создание и инициализация файла и бегунков
@@ -412,14 +414,40 @@ void SequenceSorting::distribute(QFile *src,
     l = m;
     do {
         l--;
-        Runs::readIntFromRunnerPos(runnerR, heap[l]);
+        Runs::readIntFromRunnerPos(runnerR, heap[l], true);
     } while (l != mh);
     // 2) теперь заполняем нижнюю часть пирамиды
     do {
         l--;
-        Runs::readIntFromRunnerPos(runnerR, heap[l]);
+        Runs::readIntFromRunnerPos(runnerR, heap[l], true);
         SequenceSorting::sift(l, m-1, heap);
     } while (l != 0);
+    // 3) пропускаем/просеиваем элементы сквозь пирамиду
+    l = m;
+    Runs::readIntFromRunnerPos(runnerR, xRef, true);
+    while (!runnerR->getEof()) {
+        Runs::writeIntToRunnerPos(runnerW, heap[0], true);
+        // x - принадлежит той же серии
+        if (heap[0] <= x) {
+            heap[0] = x;
+            SequenceSorting::sift(0, l-1, heap);
+        }
+        // иначе начать новую серию
+        else {
+            l--;
+            heap[0] = heap[l];
+            SequenceSorting::sift(0, l-1, heap);
+            heap[l] = x;
+            if (l < mh) {
+                SequenceSorting::sift(l, m-1, heap);
+            }
+            // переполнение пирамиды, необходимо начать новую серию
+            if (l == 0) {
+                l = m;
+            }
+        }
+        Runs::readIntFromRunnerPos(runnerR, xRef, true);
+    }
 }
 
 SequenceSorting::SequenceSorting()
