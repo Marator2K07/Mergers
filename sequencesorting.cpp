@@ -26,7 +26,7 @@ void SequenceSorting::sift(int l,
     heap[i] = x;
 }
 
-void SequenceSorting::NaturalMerge(QFile *src)
+void SequenceSorting::naturalMerge(QFile *src)
 {
     int L = -1; // число серий после слияния
     QFile *f0 = new QFile;
@@ -95,7 +95,7 @@ void SequenceSorting::NaturalMerge(QFile *src)
     delete r2;
 }
 
-QFile *SequenceSorting::BalancedMerge(QFile *src,
+QFile *SequenceSorting::balancedMerge(QFile *src,
                                       QString path,
                                       int N)
 {
@@ -238,7 +238,7 @@ QFile *SequenceSorting::BalancedMerge(QFile *src,
     return resultFile;
 }
 
-QFile *SequenceSorting::Polyphase(QFile *src,
+QFile *SequenceSorting::polyphase(QFile *src,
                                   QString path,
                                   int N)
 {
@@ -388,7 +388,7 @@ QFile *SequenceSorting::Polyphase(QFile *src,
     return result;
 }
 
-void SequenceSorting::Distribute(QFile *src,
+void SequenceSorting::distribute(QFile *src,
                                  QString path,
                                  int N)
 {
