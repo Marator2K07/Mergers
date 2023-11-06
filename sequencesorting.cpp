@@ -414,6 +414,12 @@ void SequenceSorting::distribute(QFile *src,
         l--;
         Runs::readIntFromRunnerPos(runnerR, heap[l]);
     } while (l != mh);
+    // 2) теперь заполняем нижнюю часть пирамиды
+    do {
+        l--;
+        Runs::readIntFromRunnerPos(runnerR, heap[l]);
+        SequenceSorting::sift(l, m-1, heap);
+    } while (l != 0);
 }
 
 SequenceSorting::SequenceSorting()
