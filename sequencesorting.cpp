@@ -388,6 +388,13 @@ QFile *SequenceSorting::Polyphase(QFile *src,
     return result;
 }
 
+void SequenceSorting::Distribute(QFile *src,
+                                 QString path,
+                                 int N)
+{
+
+}
+
 SequenceSorting::SequenceSorting()
 {
 }

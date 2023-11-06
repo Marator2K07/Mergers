@@ -41,6 +41,15 @@ public:
                             QString path,
                             int N);
 
+    ///
+    /// \brief Distribute
+    /// усовершенствованные многофазные слияния,
+    /// в котором используется метод sift из
+    /// heapsort
+    static void Distribute(QFile *src,
+                           QString path,
+                           int N);
+
     SequenceSorting();
 };
 
