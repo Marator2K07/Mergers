@@ -401,10 +401,19 @@ void SequenceSorting::distribute(QFile *src,
     // создание и инициализация файла и бегунков
     QFile *destFile = new QFile(); // файл с будущим ответом
     Runner *runnerR = new Runner();
-    Runner *runnerw = new Runner();
+    Runner *runnerW = new Runner();
 
     // алгоритм начинается отсюда
-
+    // подготовка файлов и бегунков
+    Runs::setRunner(runnerR, src, 0); // ставим бегунок на файл-источник
+    Runs::newFile(destFile, path, "destination.txt");
+    Runs::setRunner(runnerW, destFile, 0); // ставим бегунок на файл-приемник
+    // 1) заполняем верхнюю половину пирамиды
+    l = m;
+    do {
+        l--;
+        Runs::readIntFromRunnerPos(runnerR, heap[l]);
+    } while (l != mh);
 }
 
 SequenceSorting::SequenceSorting()
