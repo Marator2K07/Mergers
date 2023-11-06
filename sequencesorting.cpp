@@ -392,6 +392,18 @@ void SequenceSorting::Distribute(QFile *src,
                                  QString path,
                                  int N)
 {
+    // подготовка
+    const int m = 16; // размер массива для пирамиды
+    int mh = m / 2; // размер (высота) пирамиды
+    int heap[m]; // сама куча (пирамида)
+    int l; // левая граница нужного участка массива
+    int r; // правая граница нужного участка массива
+    // создание и инициализация файла и бегунков
+    QFile *destFile = new QFile(); // файл с будущим ответом
+    Runner *runnerR = new Runner();
+    Runner *runnerw = new Runner();
+
+    // алгоритм начинается отсюда
 
 }
 
