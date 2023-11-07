@@ -3,6 +3,10 @@
 
 #include <QFile>
 
+///
+/// \brief The Runner class
+/// описывает обьект бегунка, связанный с
+/// определенной позицией в файле
 class Runner
 {
 private:
