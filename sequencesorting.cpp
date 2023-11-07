@@ -401,15 +401,18 @@ vector<QString> SequenceSorting::distribute(QFile *src,
     int l; // левая граница нужного участка массива
     int r; // правая граница нужного участка массива
     vector<QString> resultFileNames; // вектор с именами файлов с сериями
+    short resultFileIndex = 0;
     // создание и инициализация файла и бегунков
-    QFile *destFile = new QFile(); // файл с будущим ответом
+    QFile *destFile = new QFile(); // для работы с файлами с готовыми сериями
     Runner *runnerR = new Runner();
     Runner *runnerW = new Runner();
 
     // алгоритм начинается отсюда
     // подготовка файлов и бегунков
     Runs::setRunner(runnerR, src, 0); // ставим бегунок на файл-источник
-    QString fileName = QString("distributed_by_[%1]_sized_heap.txt").arg(heapSize);
+    QString fileName = QString("distributed_by_[%1]_sized_heap_file[%2].txt").
+                       arg(heapSize).arg(resultFileIndex++);
+    resultFileNames.push_back(fileName); // запоминаем первый файл ответов
     Runs::newFile(destFile, path, fileName);
     Runs::setRunner(runnerW, destFile, 0); // ставим бегунок на файл-приемник
     // 1) заполняем верхнюю половину пирамиды
@@ -443,9 +446,14 @@ vector<QString> SequenceSorting::distribute(QFile *src,
             if (l < mh) {
                 SequenceSorting::sift(l, m-1, heap);
             }
-            // переполнение пирамиды, необходимо начать новую серию
+            // переполнение пирамиды, необходимо начать новую серию уже в новом файле
             if (l == 0) {
                 l = m;
+                QString fileName = QString("distributed_by_[%1]_sized_heap_file[%2].txt").
+                                   arg(heapSize).arg(resultFileIndex++);
+                resultFileNames.push_back(fileName); // запоминаем новый файл с серией
+                Runs::newFile(destFile, path, fileName);
+                Runs::setRunner(runnerW, destFile, 0); // ставим бегунок на новый файл-приемник
             }
         }
         Runs::readIntFromRunnerPos(runnerR, xRef, true);
@@ -463,6 +471,12 @@ vector<QString> SequenceSorting::distribute(QFile *src,
             SequenceSorting::sift(l, r-1, heap);
         }
     } while (l != 0);
+    // оставшаяся часть пирамиды является новой серией
+    fileName = QString("distributed_by_[%1]_sized_heap_file[%2].txt").
+                       arg(heapSize).arg(resultFileIndex++);
+    resultFileNames.push_back(fileName); // запоминаем новый файл с серией
+    Runs::newFile(destFile, path, fileName);
+    Runs::setRunner(runnerW, destFile, 0); // ставим бегунок на новый файл-приемник
     // 5) сброс оставшейся верхней части пирамиды
     while (r > 0) {
         Runs::writeIntToRunnerPos(runnerW, heap[0], true);
