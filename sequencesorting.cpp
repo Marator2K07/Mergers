@@ -390,10 +390,10 @@ QFile *SequenceSorting::polyphase(QFile *src,
 
 void SequenceSorting::distribute(QFile *src,
                                  QString path,
-                                 int N)
+                                 short heapSize)
 {
     // подготовка
-    const int m = 16; // размер массива для пирамиды
+    const int m = heapSize; // размер массива для пирамиды
     int mh = m / 2; // размер (высота) пирамиды
     int heap[m]; // сама куча (пирамида)
     int x; // буффер для работы с пирамидой
