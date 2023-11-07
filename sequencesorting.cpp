@@ -448,6 +448,19 @@ void SequenceSorting::distribute(QFile *src,
         }
         Runs::readIntFromRunnerPos(runnerR, xRef, true);
     }
+    // 4) сброс нижней части пирамиды
+    r = m;
+    do {
+        l--;
+        Runs::writeIntToRunnerPos(runnerW, heap[0], true);
+        heap[0] = heap[l];
+        SequenceSorting::sift(0, l-1, heap);
+        r--;
+        heap[l] = heap[r];
+        if (l < mh) {
+            SequenceSorting::sift(l, r-1, heap);
+        }
+    } while (l != 0);
 }
 
 SequenceSorting::SequenceSorting()
