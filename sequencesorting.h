@@ -24,19 +24,19 @@ private:
 
 public:
     ///
-    /// \brief NaturalMerge
+    /// \brief naturalMerge
     /// сортировка естественными слияниями
     static void naturalMerge(QFile *src);
 
     ///
-    /// \brief BalancedMerge
+    /// \brief balancedMerge
     /// сортировка сбалансированными слияниями
     static QFile *balancedMerge(QFile* src,
                                 QString path,
                                 int N);
 
     ///
-    /// \brief Polyphase
+    /// \brief polyphase
     /// сортировка последовательностей
     /// многофазным способом
     static QFile *polyphase(QFile* src,
@@ -44,13 +44,13 @@ public:
                             int N);
 
     ///
-    /// \brief Distribute
-    /// усовершенствованные многофазные слияния,
-    /// в котором используется метод sift из
-    /// heapsort
+    /// \brief distribute
+    /// метод распределения начальных ключей по сериям
+    /// в файл ответа, причем количество серий зависит
+    /// от передаваемого размера пирамиды
     static void distribute(QFile *src,
                            QString path,
-                           int N);
+                           short heapSize = 16);
 
     SequenceSorting();
 };
