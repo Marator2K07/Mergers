@@ -461,6 +461,13 @@ void SequenceSorting::distribute(QFile *src,
             SequenceSorting::sift(l, r-1, heap);
         }
     } while (l != 0);
+    // 5) сброс оставшейся верхней части пирамиды
+    while (r > 0) {
+        Runs::writeIntToRunnerPos(runnerW, heap[0], true);
+        heap[0] = heap[r];
+        r--;
+        SequenceSorting::sift(0, r, heap);
+    }
 }
 
 SequenceSorting::SequenceSorting()
