@@ -388,9 +388,9 @@ QFile *SequenceSorting::polyphase(QFile *src,
     return result;
 }
 
-void SequenceSorting::distribute(QFile *src,
-                                 QString path,
-                                 short heapSize)
+vector<QString> SequenceSorting::distribute(QFile *src,
+                                            QString path,
+                                            short heapSize)
 {
     // подготовка
     const int m = heapSize; // размер массива для пирамиды
@@ -400,6 +400,7 @@ void SequenceSorting::distribute(QFile *src,
     int &xRef {x}; // ссылка на него
     int l; // левая граница нужного участка массива
     int r; // правая граница нужного участка массива
+    vector<QString> resultFileNames; // вектор с именами файлов с сериями
     // создание и инициализация файла и бегунков
     QFile *destFile = new QFile(); // файл с будущим ответом
     Runner *runnerR = new Runner();
@@ -408,7 +409,8 @@ void SequenceSorting::distribute(QFile *src,
     // алгоритм начинается отсюда
     // подготовка файлов и бегунков
     Runs::setRunner(runnerR, src, 0); // ставим бегунок на файл-источник
-    Runs::newFile(destFile, path, "destination.txt");
+    QString fileName = QString("distributed_by_[%1]_sized_heap.txt").arg(heapSize);
+    Runs::newFile(destFile, path, fileName);
     Runs::setRunner(runnerW, destFile, 0); // ставим бегунок на файл-приемник
     // 1) заполняем верхнюю половину пирамиды
     l = m;
@@ -468,6 +470,8 @@ void SequenceSorting::distribute(QFile *src,
         r--;
         SequenceSorting::sift(0, r, heap);
     }
+
+    return resultFileNames;
 }
 
 SequenceSorting::SequenceSorting()
