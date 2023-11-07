@@ -394,7 +394,7 @@ vector<QString> SequenceSorting::distribute(QFile *src,
 {
     // подготовка
     const int m = heapSize; // размер массива для пирамиды
-    int mh = m / 2; // размер (высота) пирамиды
+    int mh = m / 2; // размер (ширина) пирамиды
     int heap[m]; // сама куча (пирамида)
     int x; // буффер для работы с пирамидой
     int &xRef {x}; // ссылка на него
@@ -416,7 +416,8 @@ vector<QString> SequenceSorting::distribute(QFile *src,
     Runs::newFile(destFile, path, fileName);
     Runs::setRunner(runnerW, destFile, 0); // ставим бегунок на файл-приемник
     // 1) заполняем верхнюю половину пирамиды
-    l = m;
+    l = m - 1;
+    heap[l] = *runnerR->getFirst();
     do {
         l--;
         Runs::readIntFromRunnerPos(runnerR, heap[l], true);
