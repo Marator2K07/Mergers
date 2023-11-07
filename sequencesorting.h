@@ -4,6 +4,8 @@
 #include "runs.h"
 #include <QQueue>
 
+using std::vector;
+
 ///
 /// \brief The SequenceSorting class
 /// класс со статическими методами сортировки последовательностей
@@ -46,11 +48,14 @@ public:
     ///
     /// \brief distribute
     /// метод распределения начальных ключей по сериям
-    /// в файл ответа, причем количество серий зависит
-    /// от передаваемого размера пирамиды
-    static void distribute(QFile *src,
-                           QString path,
-                           short heapSize = 16);
+    /// в файлы, причем количество серий зависит от передаваемого
+    /// размера пирамиды. Демонстрирует то, что некоторые участки
+    /// алгоритмов при сортировке последовательностей (файлов)
+    /// можно решать с помощью оперативной памяти (массивов)
+    /// при наличии оной.
+    static vector<QString> distribute(QFile *src,
+                                      QString path,
+                                      short heapSize = 16);
 
     SequenceSorting();
 };
