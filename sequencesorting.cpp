@@ -485,6 +485,11 @@ vector<QString> SequenceSorting::distribute(QFile *src,
         SequenceSorting::sift(0, r, heap);
     }
 
+    // освобождение памяти
+    delete runnerW;
+    delete runnerR;
+    delete destFile;
+
     return resultFileNames;
 }
 
